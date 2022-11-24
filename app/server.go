@@ -24,14 +24,17 @@ func main() {
 		fmt.Println("Error accepting connection: ", err.Error())
 		os.Exit(1)
 	}
+	go connector(&conn)
+}
+
+func connector(c *net.Conn) {
 	in := make([]byte, 32768)
+	conn := *c
 	for {
 		if _, err := conn.Read(in); err != nil {
 			fmt.Println("Failed to read", err.Error())
-			os.Exit(1)
 		}
 
 		conn.Write([]byte("+PONG\r\n"))
 	}
-
 }
