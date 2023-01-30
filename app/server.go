@@ -2,14 +2,18 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net"
 	"os"
 	// Uncomment this block to pass the first stage
+
+	"strings"
 )
 
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
 	fmt.Println("Logs from your program will appear here!")
+
 
 	// Uncomment this block to pass the first stage
 
@@ -34,9 +38,26 @@ func connector(c *net.Conn) {
 	conn := *c
 	for {
 		if _, err := conn.Read(in); err != nil {
-			fmt.Println("Failed to read", err.Error())
+			if err == io.EOF {
+				break
+			} else {
+				fmt.Println("Failed to read", err.Error())
+			}
 		}
 
-		conn.Write([]byte("+PONG\r\n"))
+		if string(in) == "PING" {
+			conn.Write([]byte("+PONG\r\n"))
+			return
+		}
+
+		if in[0] == '*' && in[1] == '2' {
+			stin := string(in)
+			cmd := strings.ReplaceAll(stin, "\r\n", " ")
+			cmdArr := strings.Split(cmd, " ")
+			if cmdArr[2] == "ECHO" {
+				conn.Write([]byte(fmt.Sprintf("+%s\r\n", cmdArr[3])))
+			}
+		}
+
 	}
 }
