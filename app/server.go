@@ -50,6 +50,8 @@ func connector(c *net.Conn) {
 			return
 		}
 
+		//t
+
 		if in[0] == '*' && in[1] == '2' {
 			stin := string(in)
 			cmd := strings.ReplaceAll(stin, "\r\n", " ")
