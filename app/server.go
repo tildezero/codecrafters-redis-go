@@ -45,12 +45,6 @@ func connector(c *net.Conn) {
 			}
 		}
 
-		if string(in) == "PING" {
-			conn.Write([]byte("+PONG\r\n"))
-			return
-		}
-
-		//t
 
 		if in[0] == '*' && in[1] == '2' {
 			stin := string(in)
@@ -58,6 +52,8 @@ func connector(c *net.Conn) {
 			cmdArr := strings.Split(cmd, " ")
 			if cmdArr[2] == "ECHO" {
 				conn.Write([]byte(fmt.Sprintf("+%s\r\n", cmdArr[3])))
+			} else if cmdArr[2] == "ping" || cmdArr[2] == "PING" {
+				conn.Write([]byte("+PONG\r\n"))
 			}
 		}
 
