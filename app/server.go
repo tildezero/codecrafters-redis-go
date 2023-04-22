@@ -5,6 +5,7 @@ import (
 	"io"
 	"net"
 	"os"
+	"unicode"
 
 	// Uncomment this block to pass the first stage
 
@@ -45,7 +46,7 @@ func connector(c *net.Conn) {
 			}
 		}
 
-		if in[0] == '*' && in[1] == '2' {
+		if in[0] == '*' && unicode.IsNumber(rune(in[1])) {
 			stin := string(in)
 			cmd := strings.ReplaceAll(stin, "\r\n", " ")
 			cmdArr := strings.Split(cmd, " ")
