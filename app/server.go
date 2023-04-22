@@ -5,6 +5,7 @@ import (
 	"io"
 	"net"
 	"os"
+
 	// Uncomment this block to pass the first stage
 
 	"strings"
@@ -13,7 +14,6 @@ import (
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
 	fmt.Println("Logs from your program will appear here!")
-
 
 	// Uncomment this block to pass the first stage
 
@@ -45,12 +45,11 @@ func connector(c *net.Conn) {
 			}
 		}
 
-
 		if in[0] == '*' && in[1] == '2' {
 			stin := string(in)
 			cmd := strings.ReplaceAll(stin, "\r\n", " ")
 			cmdArr := strings.Split(cmd, " ")
-			if cmdArr[2] == "ECHO" {
+			if cmdArr[2] == "ECHO" || cmdArr[2] == "echo" {
 				conn.Write([]byte(fmt.Sprintf("+%s\r\n", cmdArr[3])))
 			} else if cmdArr[2] == "ping" || cmdArr[2] == "PING" {
 				conn.Write([]byte("+PONG\r\n"))
