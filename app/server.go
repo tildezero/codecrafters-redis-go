@@ -51,7 +51,7 @@ func connector(c *net.Conn) {
 			cmd := strings.ReplaceAll(stin, "\r\n", " ")
 			cmdArr := strings.Split(cmd, " ")
 			if cmdArr[2] == "ECHO" || cmdArr[2] == "echo" {
-				conn.Write([]byte(fmt.Sprintf("+%s\r\n", cmdArr[3])))
+				conn.Write([]byte(fmt.Sprintf("+%s\r\n", cmdArr[5])))
 			} else if cmdArr[2] == "ping" || cmdArr[2] == "PING" {
 				conn.Write([]byte("+PONG\r\n"))
 			}
